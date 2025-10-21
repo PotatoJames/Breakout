@@ -36,13 +36,13 @@ void Paddle::moveRight(float dt)
 
 void Paddle::update(float dt)
 {
-    // Handle color reset
+  
     if (_colorChangeTimer > 0)
     {
         _colorChangeTimer -= dt;
         if (_colorChangeTimer <= 0)
         {
-            _sprite.setFillColor(sf::Color::White); // Reset to default color
+            _sprite.setFillColor(sf::Color::White);
         }
     }
 
@@ -52,7 +52,7 @@ void Paddle::update(float dt)
     }
     else
     {
-        setWidth(1.0f, 0.0f); // Reset to default width after duration
+        setWidth(1.0f, 0.0f);
     }
 }
 
@@ -79,22 +79,20 @@ void Paddle::setWidth(float coeff, float duration)
 
 void Paddle::trackMouse(const sf::RenderWindow& window)
 {
-    // Get the mouse's X position relative to the window
     sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
 
-    // Convert the mouse's X position to the paddle's position
     float newX = static_cast<float>(mousePosition.x) - (_sprite.getSize().x / 2);
 
-    // Clamp the paddle's position to stay within the window bounds
+
     float windowWidth = static_cast<float>(window.getSize().x);
     newX = std::max(0.0f, std::min(newX, windowWidth - _sprite.getSize().x));
 
-    // Update the paddle's position
+
     _sprite.setPosition(newX, _sprite.getPosition().y);
 }
 
-void Paddle::changeColorForASecond()
+void Paddle::paddleHit()
 {
-    _sprite.setFillColor(sf::Color::Red); // Change to red
-    _colorChangeTimer = 1.0f; // Set timer to 1 second
+    _sprite.setFillColor(sf::Color::Red);
+    _colorChangeTimer = 1.0f;
 }

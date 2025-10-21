@@ -48,7 +48,7 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
 
         sf::Vector2f brickPosition(brick.getBounds().left + brick.getBounds().width / 2,
                                    brick.getBounds().top + brick.getBounds().height / 2);
-        spawnParticles(brickPosition); // Spawn particles at the brick's center
+        spawnParticles(brickPosition);
 
         // Mark the brick as destroyed (for simplicity, let's just remove it from rendering)
         // In a complete implementation, you would set an _isDestroyed flag or remove it from the vector
@@ -63,32 +63,39 @@ int BrickManager::checkCollision(sf::CircleShape& ball, sf::Vector2f& direction)
     return collisionResponse;
 }
 
-void BrickManager::spawnParticles(sf::Vector2f position) {
-    for (int i = 0; i < 10; ++i) { // Generate 10 particles
-        float angle = static_cast<float>(rand() % 360) * 3.14159f / 180.0f; // Random angle
-        sf::Vector2f velocity(std::cos(angle) * 100.0f, std::sin(angle) * 100.0f); // Random velocity
-        _particles.emplace_back(position, velocity, 1.0f); // 1-second lifetime
+void BrickManager::spawnParticles(sf::Vector2f position) 
+{
+    for (int i = 0; i < 10; ++i) {
+        float angle = static_cast<float>(rand() % 360) * 3.14159f / 180.0f;
+        sf::Vector2f velocity(std::cos(angle) * 100.0f, std::sin(angle) * 100.0f);
+        _particles.emplace_back(position, velocity, 1.0f);
     }
 }
 
-void BrickManager::updateParticles(float dt) {
-    for (auto it = _particles.begin(); it != _particles.end();) {
+void BrickManager::updateParticles(float dt) 
+{
+    for (auto it = _particles.begin(); it != _particles.end();) 
+    {
         it->lifetime -= dt;
-        if (it->lifetime <= 0) {
-            it = _particles.erase(it); // Remove expired particles
+        if (it->lifetime <= 0) 
+        {
+            it = _particles.erase(it);
         } else {
-            it->shape.move(it->velocity * dt); // Move particle
+            it->shape.move(it->velocity * dt);
             ++it;
         }
     }
 }
 
-void BrickManager::renderParticles(sf::RenderWindow& window) {
-    for (const auto& particle : _particles) {
-        window.draw(particle.shape); // Draw each particle's shape
+void BrickManager::renderParticles(sf::RenderWindow& window) 
+{
+    for (const auto& particle : _particles) 
+    {
+        window.draw(particle.shape);
     }
 }
 
-void BrickManager::clearBricks() {
+void BrickManager::clearBricks() 
+{
     _bricks.clear();
 }

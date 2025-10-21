@@ -43,11 +43,11 @@ void Ball::update(float dt)
     // Update position with a subtle floating-point error
     _sprite.move(_direction * _velocity * dt);
 
-    // Add current position to trail
+
     if (_trailPositions.size() >= TRAIL_LENGTH) {
-        _trailPositions.erase(_trailPositions.begin()); // Remove the oldest position
+        _trailPositions.erase(_trailPositions.begin());
     }
-    _trailPositions.push_back(_sprite.getPosition()); // Add the current position
+    _trailPositions.push_back(_sprite.getPosition());
 
     // check bounds and bounce
     sf::Vector2f position = _sprite.getPosition();
@@ -84,7 +84,6 @@ void Ball::update(float dt)
         // Adjust position to avoid getting stuck inside the paddle
         _sprite.setPosition(_sprite.getPosition().x, _gameManager->getPaddle()->getBounds().top - 2 * RADIUS);
 
-        // Trigger paddle color change
         _gameManager->getPaddle()->changeColorForASecond();
     }
 
@@ -103,7 +102,7 @@ void Ball::update(float dt)
 
 void Ball::render()
 {
-    // Render trail
+    // trail
     for (size_t i = 0; i < _trailPositions.size(); ++i) {
         sf::CircleShape trailSegment(RADIUS);
         trailSegment.setPosition(_trailPositions[i]);
@@ -111,7 +110,7 @@ void Ball::render()
         _window->draw(trailSegment);
     }
 
-    // Render ball
+    //ball
     _window->draw(_sprite);
 }
 

@@ -3,13 +3,13 @@
 #include "PowerupManager.h"
 #include <iostream>
 
-constexpr int POWERUP_SPAWN_CHANCE = 700; // Chance denominator for spawning power-ups
-constexpr float POWERUP_MIN_INTERVAL = 7.5f; // Minimum time between power-up spawns
+constexpr int POWERUP_SPAWN_CHANCE = 700;
+constexpr float POWERUP_MIN_INTERVAL = 7.5f;
 
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
       _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
-      _powerupInEffect({ none, 0.f }), _timeLastPowerupSpawned(0.f), _useMouseInput(true) // Initialize toggle
+      _powerupInEffect({ none, 0.f }), _timeLastPowerupSpawned(0.f), _useMouseInput(true)
 {
     _font.loadFromFile("font/montS.ttf");
     _masterText.setFont(_font);
@@ -38,17 +38,17 @@ void GameManager::update(float dt)
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
 
-    // Check if the game is over
+    
     if (_lives <= 0)
     {
         _masterText.setString("Game over. Press R to restart.");
 
-        // Allow resetting the game by pressing 'R'
+        
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
         {
-            reset(); // Reset the game state
+            reset();
         }
-        return; // Skip the rest of the update logic
+        return;
     }
 
     // Check if the level is completed
@@ -84,7 +84,7 @@ void GameManager::update(float dt)
         return;
     }
 
-    // Timer
+    // timer
     _time += dt;
 
     if (_time > _timeLastPowerupSpawned + POWERUP_MIN_INTERVAL && rand() % POWERUP_SPAWN_CHANCE == 0)
@@ -93,7 +93,7 @@ void GameManager::update(float dt)
         _timeLastPowerupSpawned = _time;
     }
 
-    // Handle input toggle
+    
     static bool spaceHeld = false;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
@@ -112,7 +112,7 @@ void GameManager::update(float dt)
         spaceHeld = false;
     }
 
-    // Move paddle based on input mode
+    
     if (_useMouseInput)
     {
         _paddle->trackMouse(*_window);

@@ -16,10 +16,10 @@ public:
     sf::FloatRect getBounds() const;
     void setWidth(float coeff, float duration);
     void trackMouse(const sf::RenderWindow& window);
-    void changeColorForASecond();
+    void paddleHit();
 
 private:
-    float _colorChangeTimer = 0.0f; // Timer for color change
+    float _colorChangeTimer = 0.0f;
 
     sf::RenderWindow* _window;
     sf::RectangleShape _sprite;

@@ -33,7 +33,7 @@ private:
     float _pauseHold;
     float _time;
     float _timeLastPowerupSpawned;
-    int _lives = 3; // Number of lives
+    int _lives = 3;
     bool _levelComplete;
     std::pair<POWERUPS, float> _powerupInEffect;
 
@@ -48,7 +48,7 @@ private:
     MessagingSystem* _messagingSystem;
     UI* _ui;
 
-    bool _useMouseInput; // Tracks whether mouse input is enabled
+    bool _useMouseInput;
 
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn

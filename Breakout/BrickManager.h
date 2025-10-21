@@ -19,7 +19,7 @@ public:
 
 private:
     std::vector<Brick> _bricks;
-    std::vector<Particle> _particles; // Particle system
+    std::vector<Particle> _particles;
     sf::RenderWindow* _window;
 
     GameManager* _gameManager;
