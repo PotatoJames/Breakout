@@ -164,6 +164,7 @@
     <ClInclude Include="GameManager.h" />
     <ClInclude Include="MessagingSystem.h" />
     <ClInclude Include="Paddle.h" />
+    <ClInclude Include="Particle.h" />
     <ClInclude Include="PowerupBase.h" />
     <ClInclude Include="PowerupBigPaddle.h" />
     <ClInclude Include="PowerupFastBall.h" />

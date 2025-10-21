@@ -3,7 +3,7 @@
 #include <SFML/Window/Mouse.hpp>
 
 Paddle::Paddle(sf::RenderWindow* window)
-    : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
+    : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true), _colorChangeTimer(0.0f)
 {
     _sprite.setFillColor(sf::Color::Cyan);
     _sprite.setPosition((window->getSize().x - _width) / 2.0f, window->getSize().y - 50.0f);
@@ -36,6 +36,16 @@ void Paddle::moveRight(float dt)
 
 void Paddle::update(float dt)
 {
+    // Handle color reset
+    if (_colorChangeTimer > 0)
+    {
+        _colorChangeTimer -= dt;
+        if (_colorChangeTimer <= 0)
+        {
+            _sprite.setFillColor(sf::Color::White); // Reset to default color
+        }
+    }
+
     if (_timeInNewSize > 0)
     {
         _timeInNewSize -= dt;
@@ -81,4 +91,10 @@ void Paddle::trackMouse(const sf::RenderWindow& window)
 
     // Update the paddle's position
     _sprite.setPosition(newX, _sprite.getPosition().y);
+}
+
+void Paddle::changeColorForASecond()
+{
+    _sprite.setFillColor(sf::Color::Red); // Change to red
+    _colorChangeTimer = 1.0f; // Set timer to 1 second
 }

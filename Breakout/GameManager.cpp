@@ -3,6 +3,9 @@
 #include "PowerupManager.h"
 #include <iostream>
 
+constexpr int POWERUP_SPAWN_CHANCE = 700; // Chance denominator for spawning power-ups
+constexpr float POWERUP_MIN_INTERVAL = 7.5f; // Minimum time between power-up spawns
+
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
       _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
@@ -72,7 +75,7 @@ void GameManager::update(float dt)
     _time += dt;
 
 
-    if (_time > _timeLastPowerupSpawned + POWERUP_FREQUENCY && rand()%700 == 0)      // TODO parameterise
+	if (_time > _timeLastPowerupSpawned + POWERUP_MIN_INTERVAL && rand() % POWERUP_SPAWN_CHANCE == 0) //todo parameterize chance and interval -- DONE
     {
         _powerupManager->spawnPowerup();
         _timeLastPowerupSpawned = _time;
@@ -112,6 +115,7 @@ void GameManager::update(float dt)
     _paddle->update(dt);
     _ball->update(dt);
     _powerupManager->update(dt);
+    _brickManager->updateParticles(dt);
 }
 
 void GameManager::loseLife()
@@ -128,7 +132,8 @@ void GameManager::render()
     _ball->render();
     _brickManager->render();
     _powerupManager->render();
-    _window->draw(_masterText); // Draw instructions
+    _brickManager->renderParticles(*_window);
+    _window->draw(_masterText);
     _ui->render();
 }
 

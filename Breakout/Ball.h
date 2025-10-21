@@ -1,5 +1,7 @@
 #pragma once
 #include <SFML/Graphics.hpp>
+#include <vector> // Include for storing trail positions
+
 
 
 class GameManager;  // forward declaration
@@ -24,9 +26,13 @@ private:
     bool _isFireBall;
     float _timeWithPowerupEffect;
 
+    std::vector<sf::Vector2f> _trailPositions; // Store previous positions
+    
+
+
     GameManager* _gameManager;  // Reference to the GameManager
 
-
+    static constexpr size_t TRAIL_LENGTH = 100; // Number of trail segments
     static constexpr float RADIUS = 10.0f;      
     static constexpr float VELOCITY = 350.0f;   // for reference.
 };
