@@ -88,3 +88,7 @@ void BrickManager::renderParticles(sf::RenderWindow& window) {
         window.draw(particle.shape); // Draw each particle's shape
     }
 }
+
+void BrickManager::clearBricks() {
+    _bricks.clear();
+}

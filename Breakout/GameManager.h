@@ -19,6 +19,7 @@ public:
     void render();
     void levelComplete();
     void powerupEffect(POWERUPS pu, float t);
+    void reset();
 
     Paddle* getPaddle() const;
     BrickManager* getBrickManager() const;
@@ -32,7 +33,7 @@ private:
     float _pauseHold;
     float _time;
     float _timeLastPowerupSpawned;
-    int _lives;
+    int _lives = 3; // Number of lives
     bool _levelComplete;
     std::pair<POWERUPS, float> _powerupInEffect;
 

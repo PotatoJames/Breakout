@@ -15,6 +15,7 @@ public:
     void spawnParticles(sf::Vector2f position);
     void updateParticles(float dt);
     void renderParticles(sf::RenderWindow& window);
+    void clearBricks();
 
 private:
     std::vector<Brick> _bricks;

@@ -72,6 +72,19 @@ void UI::lifeLost(int lives)
 	_lives[_lives.size() - 1 - lives].setFillColor(sf::Color::Transparent);
 }
 
+void UI::resetLives(int lives) {
+    _lives.clear();
+    for (int i = lives; i > 0; --i) {
+        sf::CircleShape newLife;
+        newLife.setFillColor(sf::Color::Red);
+        newLife.setOutlineColor(sf::Color::Cyan);
+        newLife.setOutlineThickness(4.0f);
+        newLife.setRadius(LIFE_RADIUS);
+        newLife.setPosition((LIFE_RADIUS * 2 + LIFE_PADDING) * i, LIFE_PADDING);
+        _lives.push_back(newLife);
+    }
+}
+
 void UI::render()
 {
 	_window->draw(_powerupText);

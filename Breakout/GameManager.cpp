@@ -37,19 +37,32 @@ void GameManager::update(float dt)
     _powerupInEffect = _powerupManager->getPowerupInEffect();
     _ui->updatePowerupText(_powerupInEffect);
     _powerupInEffect.second -= dt;
-    
 
+    // Check if the game is over
     if (_lives <= 0)
     {
-        _masterText.setString("Game over.");
-        return;
+        _masterText.setString("Game over. Press R to restart.");
+
+        // Allow resetting the game by pressing 'R'
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+        {
+            reset(); // Reset the game state
+        }
+        return; // Skip the rest of the update logic
     }
+
+    // Check if the level is completed
     if (_levelComplete)
     {
-        _masterText.setString("Level completed.");
-        return;
+        // Allow resetting the game by pressing 'R'
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::R))
+        {
+            reset(); // Reset the game state
+        }
+        return; // Skip the rest of the update logic
     }
-    // pause and pause handling
+
+    // Pause handling
     if (_pauseHold > 0.f) _pauseHold -= dt;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::P))
     {
@@ -71,23 +84,22 @@ void GameManager::update(float dt)
         return;
     }
 
-    // timer.
+    // Timer
     _time += dt;
 
-
-	if (_time > _timeLastPowerupSpawned + POWERUP_MIN_INTERVAL && rand() % POWERUP_SPAWN_CHANCE == 0) //todo parameterize chance and interval -- DONE
+    if (_time > _timeLastPowerupSpawned + POWERUP_MIN_INTERVAL && rand() % POWERUP_SPAWN_CHANCE == 0)
     {
         _powerupManager->spawnPowerup();
         _timeLastPowerupSpawned = _time;
     }
 
     // Handle input toggle
-    static bool spaceHeld = false; // Prevent rapid toggling
+    static bool spaceHeld = false;
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
     {
         if (!spaceHeld)
         {
-            _useMouseInput = !_useMouseInput; // Toggle input mode
+            _useMouseInput = !_useMouseInput;
             if (_useMouseInput)
                 _masterText.setString("Mouse enabled. Press SPACE to switch.");
             else
@@ -103,7 +115,7 @@ void GameManager::update(float dt)
     // Move paddle based on input mode
     if (_useMouseInput)
     {
-        _paddle->trackMouse(*_window); // Use mouse input
+        _paddle->trackMouse(*_window);
     }
     else
     {
@@ -111,7 +123,7 @@ void GameManager::update(float dt)
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
     }
 
-    // update everything 
+    // Update everything
     _paddle->update(dt);
     _ball->update(dt);
     _powerupManager->update(dt);
@@ -140,6 +152,23 @@ void GameManager::render()
 void GameManager::levelComplete()
 {
     _levelComplete = true;
+}
+
+void GameManager::reset()
+{
+    _lives = 3;
+    _levelComplete = false;
+    _time = 0.0f;
+    _timeLastPowerupSpawned = 0.0f;
+
+    _useMouseInput = true;
+    _masterText.setString("Mouse enabled. Press SPACE to switch.");
+
+
+    _brickManager->clearBricks();
+    _brickManager->createBricks(5, 10, 80.0f, 30.0f, 5.0f);
+    _powerupManager->update(0.0f);
+    _ui->resetLives(_lives);
 }
 
 sf::RenderWindow* GameManager::getWindow() const { return _window; }
