@@ -1,5 +1,6 @@
 #include "Paddle.h"
 #include <iostream>
+#include <SFML/Window/Mouse.hpp>
 
 Paddle::Paddle(sf::RenderWindow* window)
     : _window(window), _width(PADDLE_WIDTH), _timeInNewSize(0.0f), _isAlive(true)
@@ -63,5 +64,21 @@ void Paddle::setWidth(float coeff, float duration)
     _sprite.setSize(sf::Vector2f(_width, _sprite.getSize().y));
     _timeInNewSize = duration;
     float newX = _sprite.getPosition().x + (_width - PADDLE_WIDTH) / 2;
+    _sprite.setPosition(newX, _sprite.getPosition().y);
+}
+
+void Paddle::trackMouse(const sf::RenderWindow& window)
+{
+    // Get the mouse's X position relative to the window
+    sf::Vector2i mousePosition = sf::Mouse::getPosition(window);
+
+    // Convert the mouse's X position to the paddle's position
+    float newX = static_cast<float>(mousePosition.x) - (_sprite.getSize().x / 2);
+
+    // Clamp the paddle's position to stay within the window bounds
+    float windowWidth = static_cast<float>(window.getSize().x);
+    newX = std::max(0.0f, std::min(newX, windowWidth - _sprite.getSize().x));
+
+    // Update the paddle's position
     _sprite.setPosition(newX, _sprite.getPosition().y);
 }

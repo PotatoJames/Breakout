@@ -5,14 +5,15 @@
 
 GameManager::GameManager(sf::RenderWindow* window)
     : _window(window), _paddle(nullptr), _ball(nullptr), _brickManager(nullptr), _powerupManager(nullptr),
-    _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
-    _powerupInEffect({ none,0.f }), _timeLastPowerupSpawned(0.f)
+      _messagingSystem(nullptr), _ui(nullptr), _pause(false), _time(0.f), _lives(3), _pauseHold(0.f), _levelComplete(false),
+      _powerupInEffect({ none, 0.f }), _timeLastPowerupSpawned(0.f), _useMouseInput(true) // Initialize toggle
 {
     _font.loadFromFile("font/montS.ttf");
     _masterText.setFont(_font);
     _masterText.setPosition(50, 400);
     _masterText.setCharacterSize(48);
     _masterText.setFillColor(sf::Color::Yellow);
+    _masterText.setString("Mouse enabled. Press SPACE to switch.");
 }
 
 void GameManager::initialize()
@@ -77,9 +78,35 @@ void GameManager::update(float dt)
         _timeLastPowerupSpawned = _time;
     }
 
-    // move paddle
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+    // Handle input toggle
+    static bool spaceHeld = false; // Prevent rapid toggling
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space))
+    {
+        if (!spaceHeld)
+        {
+            _useMouseInput = !_useMouseInput; // Toggle input mode
+            if (_useMouseInput)
+                _masterText.setString("Mouse enabled. Press SPACE to switch.");
+            else
+                _masterText.setString("Keyboard enabled. Press SPACE to switch.");
+            spaceHeld = true;
+        }
+    }
+    else
+    {
+        spaceHeld = false;
+    }
+
+    // Move paddle based on input mode
+    if (_useMouseInput)
+    {
+        _paddle->trackMouse(*_window); // Use mouse input
+    }
+    else
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) _paddle->moveRight(dt);
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) _paddle->moveLeft(dt);
+    }
 
     // update everything 
     _paddle->update(dt);
@@ -101,7 +128,7 @@ void GameManager::render()
     _ball->render();
     _brickManager->render();
     _powerupManager->render();
-    _window->draw(_masterText);
+    _window->draw(_masterText); // Draw instructions
     _ui->render();
 }
 

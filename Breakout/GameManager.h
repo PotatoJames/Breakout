@@ -47,6 +47,8 @@ private:
     MessagingSystem* _messagingSystem;
     UI* _ui;
 
+    bool _useMouseInput; // Tracks whether mouse input is enabled
+
     static constexpr float PAUSE_TIME_BUFFER = 0.5f;
     static constexpr float POWERUP_FREQUENCY = 7.5f;    // time between minimum powerup spawn
 };

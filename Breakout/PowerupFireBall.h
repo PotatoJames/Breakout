@@ -1,5 +1,6 @@
 #pragma once
-#include "PowerupBase.h"
+#include "PowerupBase.h" // Ensure this include is present
+
 class PowerupFireBall : public PowerupBase
 {
 public:
@@ -7,6 +8,4 @@ public:
     ~PowerupFireBall();
 
     std::pair<POWERUPS, float> applyEffect() override; // Method to apply the power-up effect
-
 };
-
